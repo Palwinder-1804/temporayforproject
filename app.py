@@ -1,31 +1,84 @@
 import streamlit as st
-from translator import detect_language, translate_to_english, translate_from_english
-from summarizer import generate_summary
+import tempfile
+from multimodal_summarizer import summarize_input
+from outputs.flowchart import generate_flowchart
+from outputs.flashcards import generate_flashcards
 
-st.set_page_config(page_title="AI Multilingual Summarizer", layout="wide")
+st.set_page_config(
+    page_title="Multilingual AI Content Summarizer",
+    layout="wide"
+)
 
-st.title("🌍 AI-Based Multilingual Content Summarizer")
-st.write("Enter text in **any language** to get a concise summary.")
+st.title("🌍 Multilingual AI Content Summarizer")
+st.markdown(
+    "Upload **text, PDF, image, or video** and get a **summary, flowchart, and flashcards**."
+)
 
-input_text = st.text_area("📥 Enter your content:", height=250)
+# -------------------------
+# INPUT SECTION
+# -------------------------
+st.header("📥 Input")
 
-summary_length = st.slider("Summary Length", 50, 200, 120)
+input_type = st.selectbox(
+    "Select input type",
+    ["Text", "PDF", "Image", "Video"]
+)
 
-if st.button("Generate Summary"):
-    if input_text.strip() == "":
-        st.warning("Please enter some text.")
-    else:
-        with st.spinner("Processing..."):
-            lang = detect_language(input_text)
-            english_text = translate_to_english(input_text, lang)
-            
-            summary_en = generate_summary(
-                english_text,
-                max_len=summary_length
+text_input = None
+file_path = None
+
+if input_type == "Text":
+    text_input = st.text_area(
+        "Paste your text here",
+        height=200
+    )
+
+else:
+    uploaded_file = st.file_uploader(
+        "Upload file",
+        type=["pdf", "png", "jpg", "jpeg", "mp4"]
+    )
+
+    if uploaded_file:
+        temp_file = tempfile.NamedTemporaryFile(delete=False)
+        temp_file.write(uploaded_file.read())
+        file_path = temp_file.name
+
+# -------------------------
+# PROCESS BUTTON
+# -------------------------
+if st.button("🚀 Generate Summary"):
+    with st.spinner("Processing content..."):
+        if input_type == "Text" and text_input:
+            summary = summarize_input("text", text_input)
+
+        elif file_path:
+            summary = summarize_input(
+                input_type.lower(),
+                file_path
             )
-            
-            final_summary = translate_from_english(summary_en, lang)
+        else:
+            st.warning("Please provide input")
+            st.stop()
 
-        st.success("Summary Generated!")
-        st.subheader("📄 Summary")
-        st.write(final_summary)
+    # -------------------------
+    # OUTPUT SECTION
+    # -------------------------
+    st.success("Done!")
+
+    st.header("📄 Summary")
+    st.write(summary)
+
+    # Flowchart
+    st.header("📊 Flowchart")
+    flowchart_path = generate_flowchart(summary)
+    st.image(flowchart_path)
+
+    # Flashcards
+    st.header("🃏 Flashcards")
+    flashcards = generate_flashcards(summary)
+
+    for i, card in enumerate(flashcards, 1):
+        with st.expander(f"Flashcard {i}"):
+            st.markdown(f"**Q:** {card['question']}")
+            st.markdown(f"**A:** {card['answer']}")

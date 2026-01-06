@@ -2,5 +2,8 @@ streamlit
 transformers
 torch
 langdetect
-deep-translator
+newspaper3k
+youtube-transcript-api
+beautifulsoup4
+lxml
 sentencepiece
