@@ -1,7 +1,6 @@
 from PIL import Image
 import pytesseract
 
-def image_to_text(image_path):
-    img = Image.open(image_path)
-    text = pytesseract.image_to_string(img)
-    return text
+def image_to_text(path: str) -> str:
+    img = Image.open(path)
+    return pytesseract.image_to_string(img)

@@ -1,6 +1,0 @@
-digraph {
-	rankdir=TB size="8,10"
-	0 [label="Artificial Intelligence (AI) has emerged as one of the most transformative technologies of the 21st century"]
-	1 [label="From healthcare and education to agriculture, transportation, and entertainment, AI-driven systems are reshaping how humans live, work, and interact with the world"]
-	0 -> 1
-}
