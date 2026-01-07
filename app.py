@@ -8,13 +8,14 @@ from core.video_processor import extract_video_text
 from core.image_processor import extract_text_from_image
 from outputs.flowchart import generate_flowchart
 from outputs.flashcards import generate_flashcards
+from core.pdf_processor import extract_text_from_pdf
 
 st.set_page_config("AI Content Summarizer", layout="wide")
 st.title("🌍 Automated Content Summarizer")
 
 input_type = st.selectbox(
     "Select Input Type",
-    ["Text", "Image", "Video"]
+    ["Text", "PDF","Image", "Video"]
 )
 
 raw_text = ""
@@ -31,6 +32,11 @@ elif input_type == "Video":
     video_url = st.text_input("Enter YouTube video URL")
     if video_url:
         raw_text = extract_video_text(video_url)
+elif input_type == "PDF":
+    pdf = st.file_uploader("Upload PDF file", type=["pdf"])
+    if pdf:
+        raw_text = extract_text_from_pdf(pdf)
+
 
 if st.button("🚀 Generate Summary") and raw_text:
     with st.spinner("Processing content..."):
