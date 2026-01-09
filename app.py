@@ -28,12 +28,22 @@ def index():
 # ===============================
 @app.route("/api/text", methods=["POST"])
 def text_api():
-    data = request.get_json(silent=True) or {}
-    result = run_pipeline(
-        input_type="text",
-        text=data.get("text", "")
-    )
-    return jsonify(result)
+    try:
+        data = request.get_json(silent=True) or {}
+        print("📝 TEXT INPUT RECEIVED")
+
+        result = run_pipeline(
+            input_type="text",
+            text=data.get("text", "")
+        )
+
+        print("✅ TEXT RESULT GENERATED")
+
+        return jsonify(result or {"summary": "", "flashcards": []})
+
+    except Exception as e:
+        print("❌ TEXT API ERROR:", e)
+        return jsonify({"error": str(e)}), 500
 
 
 # ===============================
@@ -41,12 +51,25 @@ def text_api():
 # ===============================
 @app.route("/api/pdf", methods=["POST"])
 def pdf_api():
-    file = request.files.get("file")
-    result = run_pipeline(
-        input_type="pdf",
-        file=file
-    )
-    return jsonify(result)
+    try:
+        file = request.files.get("file")
+        print("📄 PDF INPUT RECEIVED")
+
+        if not file:
+            return jsonify({"error": "No PDF file uploaded"}), 400
+
+        result = run_pipeline(
+            input_type="pdf",
+            file=file
+        )
+
+        print("✅ PDF RESULT GENERATED")
+
+        return jsonify(result or {"summary": "", "flashcards": []})
+
+    except Exception as e:
+        print("❌ PDF API ERROR:", e)
+        return jsonify({"error": str(e)}), 500
 
 
 # ===============================
@@ -54,12 +77,25 @@ def pdf_api():
 # ===============================
 @app.route("/api/image", methods=["POST"])
 def image_api():
-    file = request.files.get("file")
-    result = run_pipeline(
-        input_type="image",
-        file=file
-    )
-    return jsonify(result)
+    try:
+        file = request.files.get("file")
+        print("🖼 IMAGE INPUT RECEIVED")
+
+        if not file:
+            return jsonify({"error": "No image uploaded"}), 400
+
+        result = run_pipeline(
+            input_type="image",
+            file=file
+        )
+
+        print("✅ IMAGE RESULT GENERATED")
+
+        return jsonify(result or {"summary": "", "flashcards": []})
+
+    except Exception as e:
+        print("❌ IMAGE API ERROR:", e)
+        return jsonify({"error": str(e)}), 500
 
 
 # ===============================
@@ -67,12 +103,22 @@ def image_api():
 # ===============================
 @app.route("/api/video", methods=["POST"])
 def video_api():
-    data = request.get_json(silent=True) or {}
-    result = run_pipeline(
-        input_type="video",
-        url=data.get("url", "")
-    )
-    return jsonify(result)
+    try:
+        data = request.get_json(silent=True) or {}
+        print("🎥 VIDEO INPUT RECEIVED")
+
+        result = run_pipeline(
+            input_type="video",
+            url=data.get("url", "")
+        )
+
+        print("✅ VIDEO RESULT GENERATED")
+
+        return jsonify(result or {"summary": "", "flashcards": []})
+
+    except Exception as e:
+        print("❌ VIDEO API ERROR:", e)
+        return jsonify({"error": str(e)}), 500
 
 
 # ===============================
