@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Content Summarizer</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <h1>🧠 AI Content Summarizer</h1>
+    <p>Summaries • Insights • Flashcards • Flow</p>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+
+    <!-- INPUT TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('text')">Text</button>
+      <button class="tab" onclick="switchTab('pdf')">PDF</button>
+      <button class="tab" onclick="switchTab('image')">Image</button>
+      <button class="tab" onclick="switchTab('video')">Video URL</button>
+    </div>
+
+    <!-- INPUT SECTIONS -->
+    <section id="text" class="input-section active">
+      <textarea id="textInput" placeholder="Paste your content here..."></textarea>
+      <button class="primary" onclick="submitText()">Generate</button>
+    </section>
+
+    <section id="pdf" class="input-section">
+      <input type="file" id="pdfInput" accept=".pdf">
+      <button class="primary" onclick="submitFile('/api/pdf','pdfInput')">Generate</button>
+    </section>
+
+    <section id="image" class="input-section">
+      <input type="file" id="imageInput" accept="image/*">
+      <button class="primary" onclick="submitFile('/api/image','imageInput')">Generate</button>
+    </section>
+
+    <section id="video" class="input-section">
+      <input type="text" id="videoInput" placeholder="Paste YouTube URL">
+      <button class="primary" onclick="submitVideo()">Generate</button>
+    </section>
+
+    <!-- LOADER -->
+    <div id="loader" class="loader hidden"></div>
+
+    <!-- OUTPUT -->
+    <section id="output" class="output hidden">
+
+      <div class="card fade">
+        <h3>📄 Summary</h3>
+        <pre id="summary"></pre>
+      </div>
+
+      <div class="card fade">
+        <h3>💡 Insights</h3>
+        <ul id="insights"></ul>
+      </div>
+
+      <div class="card fade">
+        <h3>🎓 Flashcards</h3>
+        <div id="flashcards"></div>
+      </div>
+
+      <div class="card fade">
+        <h3>🔁 Flow Steps</h3>
+        <ol id="flowchart"></ol>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

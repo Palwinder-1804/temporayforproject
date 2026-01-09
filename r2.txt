@@ -1,0 +1,25 @@
+
+flask
+flask-cors
+python-dotenv
+
+
+transformers
+torch
+sentencepiece
+
+
+openai
+
+ssing
+pdfplumber
+
+# Image OCR
+pillow
+pytesseract
+
+# Video captions
+youtube-transcript-api
+
+# Utilities
+regex

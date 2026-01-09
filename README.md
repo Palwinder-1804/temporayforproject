@@ -94,14 +94,23 @@ OPENAI_API_KEY=your_api_key_here
 #### 🔒 Never commit your API key to GitHub or share it publicly.
 
 ## ▶️ Run the Application
+
+### Streamlit (original UI)
 ``` bash
 streamlit run app.py
 ```
 
-#### After running open your browser and visit:
- ```arduiono
- http://localhost:8501
+Open: http://localhost:8501
+
+---
+
+### Flask API (if you prefer the HTTP API)
+If you added or want to run the Flask app (the repo includes an example `app.py` HTTP server), run:
+```bash
+python app.py
 ```
+Open: http://localhost:5000/  (health) or POST to `/api/text`, `/api/pdf`, `/api/image`, `/api/video` as JSON/multipart described in the code
+
 
 ---
 ## 🧠 How It Works
